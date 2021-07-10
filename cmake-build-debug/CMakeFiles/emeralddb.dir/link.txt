@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/emeralddb.dir/src/pmd/pmdMain.cc.o -o emeralddb 
