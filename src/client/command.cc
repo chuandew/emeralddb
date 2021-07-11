@@ -102,7 +102,7 @@ int ICommand::recvReply(ossSocket & sock){
     return getError(EDB_SOCK_NOT_CONNECT);
   }
 
-  while(1){
+  while(true){
     // receive data from the server.first receive the length of the data.
     ret = sock.recv(_recvBuf, sizeof(int));
     if(EDB_TIMEOUT == ret){
@@ -116,13 +116,13 @@ int ICommand::recvReply(ossSocket & sock){
 
   // get the value of length.
   length = *(int*)_recvBuf;
-  // judget the length is valid or not
+  // judge the length is valid or not
   if(length > RECV_BUF_SIZE){
     return getError(EDB_RECV_DATA_LENGTH_ERROR);
   }
 
   // receive data from the server.seconde receive the last data
-  while(1){
+  while(true){
     ret = sock.recv(&_recvBuf[sizeof(int)], length-sizeof(int));
     if(ret == EDB_TIMEOUT){
       continue;

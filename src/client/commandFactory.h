@@ -20,7 +20,7 @@ class CommandFactory {
 public:
     CommandFactory();
 
-    ~CommandFactory() {};
+    ~CommandFactory();
 
     void addCommand();
 

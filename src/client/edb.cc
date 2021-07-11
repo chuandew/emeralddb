@@ -16,7 +16,7 @@ const char NEW_LINE = '\n';
 
 int gQuit = 0;
 
-void Edb::start(void) {
+void Edb::start() {
     std::cout << "Welcome to EmeraldDB Shell!" << std::endl;
     std::cout << "edb help for help, Ctrl + c or quit to exit" << std::endl;
     while (0 == gQuit) {
@@ -24,7 +24,7 @@ void Edb::start(void) {
     }
 }
 
-void Edb::prompt(void) {
+void Edb::prompt() {
     int ret = EDB_OK;
     ret = readInput("edb", 0);
 
@@ -41,9 +41,9 @@ void Edb::prompt(void) {
     std::string cmd = "";
     std::vector<std::string> optionVec;
 
-    std::vector<std::string>::iterator iter = textVec.begin();
+    auto iter = textVec.begin();
     // handle different command here
-    ICommand *pCmd = NULL;
+    ICommand *pCmd = nullptr;
     for (; iter != textVec.end(); ++iter) {
         std::string str = *iter;
         if (0 == count) {
@@ -54,7 +54,7 @@ void Edb::prompt(void) {
         }
     }
     pCmd = _cmdFactory.getCommandProcessor(cmd.c_str());
-    if (NULL != pCmd) {
+    if (nullptr != pCmd) {
         pCmd->execute(_sock, optionVec);
     }
 }

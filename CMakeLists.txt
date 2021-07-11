@@ -15,8 +15,7 @@ find_package(Boost 1.71 REQUIRED COMPONENTS
 #message("Boost_VERSION is " ${Boost_VERSION}) #2020-01-15
 #message("Boost_LIBRARIES is " ${Boost_LIBRARIES}) #2020-01-15
 
-
-include_directories( ${Boost_INCLUDE_DIR} )
+include_directories(${Boost_INCLUDE_DIR})
 include_directories(bson/src)
 include_directories(src/include)
 
@@ -30,12 +29,14 @@ list(APPEND bson_source
 
 add_executable(emeralddb
         src/pmd/pmdMain.cc
-        src/oss/ossSocket.cc ${bson_source})
+        src/oss/ossSocket.cc
+        ${bson_source})
 target_link_libraries(emeralddb ${Boost_LIBRARIES})
 
-add_executable(edb src/client/edb.cc
+add_executable(edb
+        src/client/edb.cc
         src/client/command.cc
         src/client/commandFactory.cc
         src/oss/ossSocket.cc
         ${bson_source})
-target_link_libraries(edb  ${Boost_LIBRARIES})
+target_link_libraries(edb ${Boost_LIBRARIES})

@@ -17,10 +17,10 @@ public:
 
     ~Edb() {};
 public:
-    void start(void);
+    void start();
 
 protected:
-    void prompt(void);
+    void prompt();
 
 private:
     void split(const std::string &text, char delim, std::vector<std::string> &result);
