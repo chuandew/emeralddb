@@ -17,80 +17,73 @@
 
 class _ossSocket {
 private:
-    int _fd;
-    socklen_t _addressLen;
-    socklen_t _peerAddressLen;
-    struct sockaddr_in _sockAddress;
-    struct sockaddr_in _peerAddress;
-    bool _init;
-    int _timeout;
-protected:
-    unsigned int _getPort(sockaddr_in *addr);
+  int _fd;
+  socklen_t _addressLen;
+  socklen_t _peerAddressLen;
+  struct sockaddr_in _sockAddress;
+  struct sockaddr_in _peerAddress;
+  bool _init;
+  int _timeout;
 
-    int _getAddress(sockaddr_in *addr, char *pAddress, unsigned int length);
+protected:
+  unsigned int _getPort(sockaddr_in *addr);
+
+  int _getAddress(sockaddr_in *addr, char *pAddress, unsigned int length);
 
 public:
-    int setSocketLi(int lOnOff, int linger);
+  int setSocketLi(int lOnOff, int linger);
 
-    void setAddress(const char *pHostName, unsigned int port);
+  void setAddress(const char *pHostName, unsigned int port);
 
-    // create a listening socket
-    _ossSocket();
+  // create a listening socket
+  _ossSocket();
 
-    _ossSocket(unsigned int port, int timeout = 0);
+  _ossSocket(unsigned int port, int timeout = 0);
 
-    // Create a connecting socket
-    _ossSocket(const char *pHostname, unsigned int port, int timeout = 0);
+  // Create a connecting socket
+  _ossSocket(const char *pHostname, unsigned int port, int timeout = 0);
 
-    // Create from existing socket
-    _ossSocket(int *sock, int timeout = 0);
+  // Create from existing socket
+  _ossSocket(int *sock, int timeout = 0);
 
-    ~_ossSocket() {
-        close();
-    }
+  ~_ossSocket() { close(); }
 
-    int initSocket();
+  int initSocket();
 
-    int bind_listen();
+  int bind_listen();
 
-    bool isConnected();
+  bool isConnected();
 
-    int send(const char *pMsg, int len,
-             int timeout = OSS_SOCKET_DFT_TIMEOUT,
-             int flags = 0);
+  int send(const char *pMsg, int len, int timeout = OSS_SOCKET_DFT_TIMEOUT,
+           int flags = 0);
 
-    int recv(char *pMsg, int len,
-             int timeout = OSS_SOCKET_DFT_TIMEOUT,
-             int flags = 0);
+  int recv(char *pMsg, int len, int timeout = OSS_SOCKET_DFT_TIMEOUT,
+           int flags = 0);
 
-    int recvNF(char *pMsg, int &len,
-               int timeout = OSS_SOCKET_DFT_TIMEOUT);
+  int recvNF(char *pMsg, int &len, int timeout = OSS_SOCKET_DFT_TIMEOUT);
 
-    int connect();
+  int connect();
 
-    void close();
+  void close();
 
-    int accept(int *sock, struct sockaddr *addr, socklen_t *addrlen,
-               int timeout = OSS_SOCKET_DFT_TIMEOUT);
+  int accept(int *sock, struct sockaddr *addr, socklen_t *addrlen,
+             int timeout = OSS_SOCKET_DFT_TIMEOUT);
 
-    int disableNagle();
+  int disableNagle();
 
-    unsigned int getPeerPort();
+  unsigned int getPeerPort();
 
-    int getPeerAddress(char *pAddress, unsigned int length);
+  int getPeerAddress(char *pAddress, unsigned int length);
 
-    unsigned int getLocalPort();
+  unsigned int getLocalPort();
 
-    int getLocalAddress(char *pAddresss, unsigned int length);
+  int getLocalAddress(char *pAddresss, unsigned int length);
 
-    int setTimeout(int seconds);
+  int setTimeout(int seconds);
 
-    static int getHostName(char *pName, int nameLen);
+  static int getHostName(char *pName, int nameLen);
 
-    static int getPort(const char *pServiceName, unsigned short &port);
-
+  static int getPort(const char *pServiceName, unsigned short &port);
 };
 
 typedef class _ossSocket ossSocket;
-
-

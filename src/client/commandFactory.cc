@@ -18,7 +18,7 @@ ICommand *CommandFactory::getCommandProcessor(const char *pCmd) {
         if (iter != _cmdMap.end()) {
             pProcessor = iter->second;
         }
-    } while (0);
+    } while (false);
 
     return pProcessor;
 }

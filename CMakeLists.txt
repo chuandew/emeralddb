@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 project(emeralddb)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE DEBUG)
 
 find_package(Boost 1.71 REQUIRED COMPONENTS
         system
@@ -29,6 +31,7 @@ list(APPEND bson_source
 
 add_executable(emeralddb
         src/pmd/pmdMain.cc
+        src/pmd/pmdTcpListener.cc
         src/oss/ossSocket.cc
         ${bson_source})
 target_link_libraries(emeralddb ${Boost_LIBRARIES})

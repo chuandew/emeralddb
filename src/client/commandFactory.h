@@ -14,7 +14,6 @@
   _cmdMap.insert(COMMAND_MAP::value_type(str, pObj));     \
  }                                                        \
 
-
 class CommandFactory {
     typedef std::map<std::string, ICommand *> COMMAND_MAP;
 public:

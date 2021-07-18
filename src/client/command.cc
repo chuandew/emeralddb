@@ -4,8 +4,8 @@
 
 #include "command.h"
 
-#include "core.h"
 #include "commandFactory.h"
+#include "core.h"
 
 COMMAND_BEGIN
 COMMAND_ADD(COMMAND_CONNECT, ConnectCommand)
@@ -15,99 +15,99 @@ COMMAND_END
 
 extern int qQuit;
 
-int ICommand::execute(ossSocket & sock, std::vector<std::string> & argVec){
+int ICommand::execute(ossSocket &sock, std::vector<std::string> &argVec) {
   return EDB_OK;
 }
 
-int ICommand::getError(int code){
-  switch(code){
-    case EDB_OK:
-      break;
-    case EDB_IO:
-      std::cout << "is error is occurred" << std::endl;
-      break;
-    case EDB_INVALIDARG:
-      std::cout << "invalid argument" << std::endl;
-      break;
-    case EDB_PERM:
-      std::cout << "edb_perm" << std::endl;
-      break;
-    case EDB_OOM:
-      std::cout << "edb_oom" << std::endl;
-      break;
-    case EDB_SYS:
-      std::cout << "system error is occurred" << std::endl;
-      break;
-    case EDB_QUIESCED:
-      std::cout << "EDB_QUIESCED" << std::endl;
-      break;
-    case EDB_NETWORK_CLOSE:
-      std::cout << "net work is closed." << std::endl;
-      break;
-    case EDB_HEADER_INVALID:
-      std::cout << "record header is not right." << std::endl;
-      break;
-    case EDB_IXM_ID_EXIST:
-      std::cout << "record key is exist." << std::endl;
-      break;
-    case EDB_IXM_ID_NOT_EXIST:
-      std::cout << "record is not exist" << std::endl;
-      break;
-    case EDB_NO_ID:
-      std::cout << "_id is needed" << std::endl;
-      break;
-    case EDB_QUERY_INVALID_ARGUMENT:
-      std::cout << "invalid query argument" << std::endl;
-      break;
-    case EDB_INSERT_INVALID_ARGUMENT:
-      std::cout <<  "invalid insert argument" << std::endl;
-      break;
-    case EDB_DELETE_INVALID_ARGUMENT:
-      std::cout << "invalid delete argument" << std::endl;
-      break;
-    case EDB_INVALID_RECORD:
-      std::cout << "invalid record string" << std::endl;
-      break;
-    case EDB_SOCK_NOT_CONNECT:
-      std::cout << "sock connection does not exist" << std::endl;
-      break;
-    case EDB_SOCK_REMOTE_CLOSED:
-      std::cout << "remote sock connection is closed" << std::endl;
-      break;
-    case EDB_MSG_BUILD_FAILED:
-      std::cout << "msg build failed" << std::endl;
-      break;
-    case EDB_SOCK_SEND_FAILED:
-      std::cout << "sock send msg faild" << std::endl;
-      break;
-    case EDB_SOCK_INIT_FAILED:
-      std::cout << "sock init failed" << std::endl;
-      break;
-    case EDB_SOCK_CONNECT_FAILED:
-      std::cout << "sock connect remote server failed" << std::endl;
-      break;
-    default :
-      break;
+int ICommand::getError(int code) {
+  switch (code) {
+  case EDB_OK:
+    break;
+  case EDB_IO:
+    std::cout << "is error is occurred" << std::endl;
+    break;
+  case EDB_INVALIDARG:
+    std::cout << "invalid argument" << std::endl;
+    break;
+  case EDB_PERM:
+    std::cout << "edb_perm" << std::endl;
+    break;
+  case EDB_OOM:
+    std::cout << "edb_oom" << std::endl;
+    break;
+  case EDB_SYS:
+    std::cout << "system error is occurred" << std::endl;
+    break;
+  case EDB_QUIESCED:
+    std::cout << "EDB_QUIESCED" << std::endl;
+    break;
+  case EDB_NETWORK_CLOSE:
+    std::cout << "net work is closed." << std::endl;
+    break;
+  case EDB_HEADER_INVALID:
+    std::cout << "record header is not right." << std::endl;
+    break;
+  case EDB_IXM_ID_EXIST:
+    std::cout << "record key is exist." << std::endl;
+    break;
+  case EDB_IXM_ID_NOT_EXIST:
+    std::cout << "record is not exist" << std::endl;
+    break;
+  case EDB_NO_ID:
+    std::cout << "_id is needed" << std::endl;
+    break;
+  case EDB_QUERY_INVALID_ARGUMENT:
+    std::cout << "invalid query argument" << std::endl;
+    break;
+  case EDB_INSERT_INVALID_ARGUMENT:
+    std::cout << "invalid insert argument" << std::endl;
+    break;
+  case EDB_DELETE_INVALID_ARGUMENT:
+    std::cout << "invalid delete argument" << std::endl;
+    break;
+  case EDB_INVALID_RECORD:
+    std::cout << "invalid record string" << std::endl;
+    break;
+  case EDB_SOCK_NOT_CONNECT:
+    std::cout << "sock connection does not exist" << std::endl;
+    break;
+  case EDB_SOCK_REMOTE_CLOSED:
+    std::cout << "remote sock connection is closed" << std::endl;
+    break;
+  case EDB_MSG_BUILD_FAILED:
+    std::cout << "msg build failed" << std::endl;
+    break;
+  case EDB_SOCK_SEND_FAILED:
+    std::cout << "sock send msg faild" << std::endl;
+    break;
+  case EDB_SOCK_INIT_FAILED:
+    std::cout << "sock init failed" << std::endl;
+    break;
+  case EDB_SOCK_CONNECT_FAILED:
+    std::cout << "sock connect remote server failed" << std::endl;
+    break;
+  default:
+    break;
   }
   return code;
 }
 
-int ICommand::recvReply(ossSocket & sock){
+int ICommand::recvReply(ossSocket &sock) {
   // define message data length
   int length = 0;
   int ret = EDB_OK;
   // fill receive buffer with 0.
   memset(_recvBuf, 0, RECV_BUF_SIZE);
-  if(!sock.isConnected()){
+  if (!sock.isConnected()) {
     return getError(EDB_SOCK_NOT_CONNECT);
   }
 
-  while(true){
+  while (true) {
     // receive data from the server.first receive the length of the data.
     ret = sock.recv(_recvBuf, sizeof(int));
-    if(EDB_TIMEOUT == ret){
+    if (EDB_TIMEOUT == ret) {
       continue;
-    }else if (EDB_NETWORK_CLOSE == ret){
+    } else if (EDB_NETWORK_CLOSE == ret) {
       return getError(EDB_SOCK_REMOTE_CLOSED);
     } else {
       break;
@@ -115,20 +115,20 @@ int ICommand::recvReply(ossSocket & sock){
   }
 
   // get the value of length.
-  length = *(int*)_recvBuf;
+  length = *(int *)_recvBuf;
   // judge the length is valid or not
-  if(length > RECV_BUF_SIZE){
+  if (length > RECV_BUF_SIZE) {
     return getError(EDB_RECV_DATA_LENGTH_ERROR);
   }
 
   // receive data from the server.seconde receive the last data
-  while(true){
-    ret = sock.recv(&_recvBuf[sizeof(int)], length-sizeof(int));
-    if(ret == EDB_TIMEOUT){
+  while (true) {
+    ret = sock.recv(&_recvBuf[sizeof(int)], length - sizeof(int));
+    if (ret == EDB_TIMEOUT) {
       continue;
-    } else if (EDB_NETWORK_CLOSE == ret){
+    } else if (EDB_NETWORK_CLOSE == ret) {
       return getError(EDB_SOCK_REMOTE_CLOSED);
-    }else {
+    } else {
       break;
     }
   }
@@ -136,60 +136,60 @@ int ICommand::recvReply(ossSocket & sock){
   return ret;
 }
 
-int ICommand::sendOrder(ossSocket & sock, OnMsgBuild onMsgBuild){
+int ICommand::sendOrder(ossSocket &sock, OnMsgBuild onMsgBuild) {
   int ret = EDB_OK;
   bson::BSONObj bsonData;
-  try{
+  try {
     bsonData = bson::fromjson(_jsonString);
-  }catch(std::exception & e){
-    return getError(EDB_INVALID_RECORD); 
+  } catch (std::exception &e) {
+    return getError(EDB_INVALID_RECORD);
   }
 
   memset(_sendBuf, 0, SEND_BUF_SIZE);
   int size = SEND_BUF_SIZE;
-  char * pSendBuf = _sendBuf;
+  char *pSendBuf = _sendBuf;
   ret = onMsgBuild(&pSendBuf, &size, bsonData);
-  if(ret){
+  if (ret) {
     return getError(EDB_MSG_BUILD_FAILED);
   }
-  ret = sock.send(pSendBuf, *(int*)pSendBuf);
-  if(ret){
+  ret = sock.send(pSendBuf, *(int *)pSendBuf);
+  if (ret) {
     return getError(EDB_SOCK_SEND_FAILED);
   }
 
   return ret;
 }
 
-int ICommand::sendOrder(ossSocket & sock, int opCode){
+int ICommand::sendOrder(ossSocket &sock, int opCode) {
   int ret = EDB_OK;
   memset(_sendBuf, 0, SEND_BUF_SIZE);
-  char * pSendBuf = _sendBuf;
+  char *pSendBuf = _sendBuf;
   const char *pStr = "hello world";
-  *(int*)pSendBuf = strlen(pStr)+1 + sizeof(int);
-  memcpy(&pSendBuf[4], pStr, strlen(pStr)+1);
-  /* 
+  *(int *)pSendBuf = strlen(pStr) + 1 + sizeof(int);
+  memcpy(&pSendBuf[4], pStr, strlen(pStr) + 1);
+  /*
    MsgHeader *header = (MsgHeader*)pSendBuf;
    header->messageLen = sizeof(MsgHeader);
    header->opCode = opCode;
    */
-  ret = sock.send(pSendBuf, *(int*)pSendBuf);
+  ret = sock.send(pSendBuf, *(int *)pSendBuf);
   return ret;
 }
 
 /*****************************ConnnectCommand******************************/
-int ConnectCommand::execute(ossSocket & sock, std::vector<std::string> & argVec){
+int ConnectCommand::execute(ossSocket &sock, std::vector<std::string> &argVec) {
   int rc = EDB_OK;
   _address = argVec[0];
   _port = atoi(argVec[1].c_str());
   sock.close();
-  sock.setAddress(_address.c_str(),_port);
+  sock.setAddress(_address.c_str(), _port);
   rc = sock.initSocket();
-  if(rc){
+  if (rc) {
     printf("Failed to init socket, rc = %d", rc);
     goto error;
   }
   rc = sock.connect();
-  if(rc){
+  if (rc) {
     printf("Failed to connect, rc = %d", rc);
     goto error;
   }
@@ -203,15 +203,15 @@ error:
 }
 
 /*************************************************QuitCommand**********************************/
-int QuitCommand::handleReply(){
+int QuitCommand::handleReply() {
   int ret = EDB_OK;
   // gQuit = 1;
   return ret;
 }
 
-int QuitCommand::execute(ossSocket & sock, std::vector<std::string> & argVec){
+int QuitCommand::execute(ossSocket &sock, std::vector<std::string> &argVec) {
   int ret = EDB_OK;
-  if(!sock.isConnected()){
+  if (!sock.isConnected()) {
     return getError(EDB_SOCK_NOT_CONNECT);
   }
   ret = sendOrder(sock, 0);
@@ -221,15 +221,19 @@ int QuitCommand::execute(ossSocket & sock, std::vector<std::string> & argVec){
 }
 
 /**********************************************HelpCommand********************************/
-int HelpCommand::execute(ossSocket & sock, std::vector<std::string> & argVec){
+int HelpCommand::execute(ossSocket &sock, std::vector<std::string> &argVec) {
   int ret = EDB_OK;
   printf("List of classses of commands:\n\n");
   printf("%s [server] [port]-- connecting emeralddb server\n", COMMAND_CONNECT);
-  printf("%s -- sending a insert command to emeralddb server\n", COMMAND_INSERT);
+  printf("%s -- sending a insert command to emeralddb server\n",
+         COMMAND_INSERT);
   printf("%s -- sending a query command to emeralddb server\n", COMMAND_QUERY);
-  printf("%s -- sending a delete command to emeralddb server\n", COMMAND_DELETE);
-  printf("%s [number]-- sending a test command to emeralddb server\n", COMMAND_TEST);
-  printf("%s -- providing current number of record inserting\n", COMMAND_SNAPSHOT);
+  printf("%s -- sending a delete command to emeralddb server\n",
+         COMMAND_DELETE);
+  printf("%s [number]-- sending a test command to emeralddb server\n",
+         COMMAND_TEST);
+  printf("%s -- providing current number of record inserting\n",
+         COMMAND_SNAPSHOT);
   printf("%s -- quitting command\n\n", COMMAND_QUIT);
   printf("Type \"help\" command for help\n");
   return ret;
