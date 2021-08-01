@@ -33,6 +33,7 @@ add_executable(emeralddb
         src/pmd/pmdMain.cc
         src/pmd/pmdTcpListener.cc
         src/oss/ossSocket.cc
+        src/oss/ossPrimitiveFileOp.cc
         ${bson_source})
 target_link_libraries(emeralddb ${Boost_LIBRARIES})
 
