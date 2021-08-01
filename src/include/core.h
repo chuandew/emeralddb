@@ -30,7 +30,7 @@
 #include <vector>
 #include <iostream>
 
-#define OSS_MAX_PATHSIZE PATH_MAX \
+#define OSS_MAX_PATHSIZE PATH_MAX
 #define OSS_FILE_SEP_STR "/"
 #define OSS_FILE_SEP_CHAR *((const char*)OSS_FILE_SET_STR)[0]
 #define OSS_NEWLINE "\n"
