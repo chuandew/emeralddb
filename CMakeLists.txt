@@ -32,6 +32,7 @@ list(APPEND bson_source
 add_executable(emeralddb
         src/pmd/pmdMain.cc
         src/pmd/pmdTcpListener.cc
+        src/pmd/pmdOptions.cc
         src/oss/ossSocket.cc
         src/oss/ossPrimitiveFileOp.cc
         src/pd/pd.cc
