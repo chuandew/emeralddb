@@ -122,7 +122,7 @@ int pmdOptions::init(int argc, char **argv) {
   po::variables_map vm2;
 
   PMD_ADD_PARAM_OPTIONS_BEGIN(all)
-  PMD_COMMANDS_OPTIONS
+    PMD_COMMANDS_OPTIONS
   PMD_ADD_PARAM_OPTIONS_END
 
   rc = readCmd(argc, argv, all, vm);
