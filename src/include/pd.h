@@ -15,8 +15,8 @@
   do {                                                                         \
     if (!(cond)) {                                                             \
       rc = (retCode);                                                          \
-      PD_LOG((level), fmt, ##__VA_ARGS__);                                      \
-      goto gotoLabel;                                                              \
+      PD_LOG((level), fmt, ##__VA_ARGS__);                                     \
+      goto gotoLabel;                                                          \
     }                                                                          \
   } while (0)
 

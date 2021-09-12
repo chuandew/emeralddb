@@ -34,6 +34,7 @@ add_executable(emeralddb
         src/pmd/pmdTcpListener.cc
         src/pmd/pmdOptions.cc
         src/pmd/pmd.cc
+        src/pmd/pmdEDU.cc
         src/oss/ossSocket.cc
         src/oss/ossPrimitiveFileOp.cc
         src/pd/pd.cc
